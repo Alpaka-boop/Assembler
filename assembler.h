@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include "tree.h"
 
-int read_word (char **arg, int *max_arg_lenth, int *buffer, int *curr_char);
+int read_word (char **arg, int *max_arg_lenth, int *buffer, size_t *curr_char);
 size_t read_file (int **buffer);
 int decoder (char *num_arr, int num_len);
-void print_arg (int *buf, int *ch, FILE *file, int line_num);
+void print_arg (int *buf, size_t *ch, FILE *file, int line_num);
 int degree (int cmd_code);
 char is_num (char *arg, int len);
 char is_cmd (char *arg, int len);

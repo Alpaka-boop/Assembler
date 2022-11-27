@@ -16,7 +16,7 @@ enum STAT {
     CMD
 };
 
-int read_word (char **arg, int *max_arg_lenth, int *buffer, int *curr_char)
+int read_word (char **arg, int *max_arg_lenth, int *buffer, size_t *curr_char)
 {
     int arg_lenth = 0;
 
@@ -86,7 +86,7 @@ int decoder (char *num_arr, int num_len)
     return number;
 }
 
-void print_arg (int *buf, int *ch, FILE *file, int line_num)
+void print_arg (int *buf, size_t *ch, FILE *file, int line_num)
 {
     int arg_lenth = 30;
     char *curr_arg = (char *) calloc(arg_lenth, sizeof(char));
@@ -183,11 +183,11 @@ void is_correct (char *arg, int len, int stat, int line_num)
 
 void file_printer (const Tree *tree, int *buffer, const size_t number_of_characters)
 {
-    int  curr_char      = 0;
-    int  curr_cmd_lenth = 30;
-    int  curr_arg_lenth = 30;
-    int  line_num       = 0;
-    FILE *opfile        = fopen(output_filename, "wb");
+    size_t  curr_char      = 0;
+    int     curr_cmd_lenth = 30;
+    int     curr_arg_lenth = 30;
+    int     line_num       = 0;
+    FILE    *opfile        = fopen(output_filename, "wb");
 
     if (!isalpha(buffer[0]))
     {
