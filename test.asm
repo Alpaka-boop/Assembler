@@ -1,6 +1,7 @@
-push 7
-push 8
-push 9
+push 1
+push 3
+push 5
 mul
 add
 out
+hlt
