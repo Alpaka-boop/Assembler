@@ -1,8 +1,5 @@
-push ax
-push -12
-:1
-push 3
-jb 1
-push 45
-out
+push 1
+push 2
+pop [0]
+pop [1]
 hlt
