@@ -104,18 +104,18 @@ int comparator (const char *l1, const char *l2)
     if (l1[curr_char] > l2[curr_char])
         return bigger;
 
-    return less;    
+    return less;    ////strcmp
 }
 
-void insert (Tree **tree, const char *str, const int lenth, const int cmd_code, int arg_num)
+void insert (Tree **tree, const char *str, const int length, const int cmd_code, int arg_num)
 {
     if (*tree == nullptr)
     {
         *tree        = (Tree *) calloc(1, sizeof(Tree));
-        (*tree)->str = (char *) calloc((size_t) lenth + 1, sizeof(char));
+        (*tree)->str = (char *) calloc((size_t) length + 1, sizeof(char));
 
-        strncpy((*tree)->str, str, (size_t) lenth);
-        (*tree)->str_lenth = lenth;
+        strncpy((*tree)->str, str, (size_t) length);
+        (*tree)->str_length = length;
         (*tree)->arg_num   = arg_num;
         (*tree)->right     = (*tree)->left = nullptr;
         (*tree)->height    = 1;
@@ -132,7 +132,7 @@ void insert (Tree **tree, const char *str, const int lenth, const int cmd_code, 
             {
                 if ((*tree)->left != nullptr)
                 {
-                    insert(&(*tree)->left, str, lenth, cmd_code, arg_num);
+                    insert(&(*tree)->left, str, length, cmd_code, arg_num);
                     
                     break;
                 }
@@ -142,10 +142,10 @@ void insert (Tree **tree, const char *str, const int lenth, const int cmd_code, 
                     (*tree)->left = (Tree *) calloc(1, sizeof(Tree));
                     (*tree)->left->right = nullptr;
                     (*tree)->left->left = nullptr;
-                    (*tree)->left->str = (char *) calloc((size_t) lenth + 1, sizeof(char));
-                    strncpy((*tree)->left->str, str, (size_t) lenth);
+                    (*tree)->left->str = (char *) calloc((size_t) length + 1, sizeof(char));
+                    strncpy((*tree)->left->str, str, (size_t) length);
                     (*tree)->left->arg_num = arg_num;
-                    (*tree)->left->str_lenth = lenth;
+                    (*tree)->left->str_length = length;
                     (*tree)->left->height = 1;
                     (*tree)->left->cmd_code = cmd_code;
                     
@@ -157,7 +157,7 @@ void insert (Tree **tree, const char *str, const int lenth, const int cmd_code, 
             {
                 if ((*tree)->right != nullptr)
                 {
-                    insert(&(*tree)->right, str, lenth, cmd_code, arg_num);
+                    insert(&(*tree)->right, str, length, cmd_code, arg_num);
                     
                     break;
                 }
@@ -167,10 +167,10 @@ void insert (Tree **tree, const char *str, const int lenth, const int cmd_code, 
                     (*tree)->right = (Tree *) calloc(1, sizeof(Tree));
                     (*tree)->right->right = nullptr;
                     (*tree)->right->left = nullptr;
-                    (*tree)->right->str = (char *) calloc((size_t) lenth + 1, sizeof(char));
-                    strncpy((*tree)->right->str, str, (size_t) lenth);
+                    (*tree)->right->str = (char *) calloc((size_t) length + 1, sizeof(char));
+                    strncpy((*tree)->right->str, str, (size_t) length);
                     (*tree)->right->arg_num = arg_num;
-                    (*tree)->right->str_lenth = lenth;
+                    (*tree)->right->str_length = length;
                     (*tree)->right->height = 1;
                     (*tree)->right->cmd_code = cmd_code;
                     
@@ -219,25 +219,22 @@ const Tree *exist (const Tree *tree, char *str)
 
 void tree_ctor (Tree **tree)
 {
-    const char  *no_arg_cmd[]    = {"hlt", "mul", "add", "sub", "div", "out", nullptr};
-    const char  *one_arg_cmd[]   = {"push", "jmp", "jb", "jbe", "ja", "jae", "je", "jne", nullptr};
-    int         no_arg_cmd_code  = 0;
-    int         one_arg_cmd_code = sizeof(no_arg_cmd) / sizeof(no_arg_cmd[0]) - 1;
-    int         curr_cmd_num     = 0;
+    #define DEF_CMD(name, arg, id) #name,
+    const char *cmd[] = {
+    #include "cmd.h"
+    nullptr};
+    #undef DEF_CMD
 
-    while (no_arg_cmd[curr_cmd_num])
+    #define DEF_CMD(name, arg, id) arg,
+    const int num_arg[] = {
+    #include "cmd.h"
+    0};
+    #undef DEF_CMD
+
+    int curr_cmd_num = 0;    
+    while (cmd[curr_cmd_num])
     {
-        insert(tree, no_arg_cmd[curr_cmd_num], (int) strlen(no_arg_cmd[curr_cmd_num]), no_arg_cmd_code, NO_ARG);
+        insert(tree, cmd[curr_cmd_num], (int) strlen(cmd[curr_cmd_num]), curr_cmd_num, num_arg[curr_cmd_num]);
         curr_cmd_num++;
-        no_arg_cmd_code++;
-    }
-
-    curr_cmd_num = 0;
-
-    while (one_arg_cmd[curr_cmd_num])
-    {
-        insert(tree, one_arg_cmd[curr_cmd_num], (int) strlen(one_arg_cmd[curr_cmd_num]), one_arg_cmd_code, ONE_ARG);
-        curr_cmd_num++;
-        one_arg_cmd_code++;
     }
 }

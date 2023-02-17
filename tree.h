@@ -5,7 +5,7 @@
 
 struct Tree {
     char *str;
-    int str_lenth;
+    int str_length;
     int arg_num;
     int cmd_code;
 

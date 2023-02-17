@@ -2,10 +2,6 @@
 #include "assembler.h"
 #include "readwrite.h"
 
-int ax_reg = -1;
-int bx_reg = 0;
-int cx_reg = 1;
-
 int main ()
 {
     int  max_lbl_num  = 10;
@@ -22,10 +18,12 @@ int main ()
 
     size_t num_of_char = read_file(&buffer);
 
-    assembler(tree, buffer, num_of_char, max_lbl_num, labels);
-    assembler(tree, buffer, num_of_char, max_lbl_num, labels);
+    if (!assembler(tree, buffer, num_of_char, max_lbl_num, labels))
+    {
+        assembler(tree, buffer, num_of_char, max_lbl_num, labels);
+    }
+
     tree_dtor(&tree);
     free(labels);
-
     return 0;
 }
